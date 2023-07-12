@@ -5,20 +5,12 @@ import time
 from settings import *
 from images import *
 from character import *
+from color import *
+from map import *
+from car import *
 
 # Inicjalizacja Pygame
 pygame.init()
-
-# Ustawienia mapy
-map_height = 10000
-map_width = map_height
-
-# Ustawienia pojazdu
-car_width = 250
-car_height = 250
-car_x = character_x - 300
-car_y = character_y
-car_speed = 20
 
 # Ustawienia kamery
 camera_width = screen_width
@@ -42,10 +34,6 @@ stamina_bar_y = 10
 hud_x = 20
 hud_y = screen_height - 60
 hud_spacing = 20
-
-# Kolory
-black = (0, 0, 0)
-gray = (128, 128, 128)
 
 # Zmienne dotyczące gracza w pojeździe
 player_in_car = False
