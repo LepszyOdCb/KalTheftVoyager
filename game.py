@@ -12,9 +12,7 @@ from car import *
 # Inicjalizacja Pygame
 pygame.init()
 
-# Ustawienia kamery
-camera_width = screen_width
-camera_height = screen_height
+
 
 # Ustawienia sprintu
 stamina = 2500
@@ -35,8 +33,7 @@ hud_x = 20
 hud_y = screen_height - 60
 hud_spacing = 20
 
-# Zmienne dotyczące gracza w pojeździe
-player_in_car = False
+
 car_rect = pygame.Rect(car_x, car_y, car_width, car_height)
 
 # Zmienna dzień
