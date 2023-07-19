@@ -15,8 +15,6 @@ from movement import *
 pygame.init()
 pygame.font.init()
 
-car_rect = pygame.Rect(car_x, car_y, car_width, car_height)
-
 # Główna pętla gry
 running = True
 while running:
@@ -145,19 +143,14 @@ while running:
     pygame.draw.rect(screen, black,
                      (stamina_bar_x, stamina_bar_y, stamina_bar_width, stamina_bar_height), 1)
 
-    # Rysowanie szarego prostokąta
+    # Rysowanie prostokąta
     pygame.draw.rect(screen, gray, (rectangle_x, rectangle_y, rectangle_width, rectangle_height))
-
-    # Rysowanie czarnej obramówki prostokąta
     pygame.draw.rect(screen, black, (rectangle_x, rectangle_y, rectangle_width, rectangle_height), 2)
 
-    
     screen.blit(text_surface, text_rect)
 
-    # Aktualizacja ekranu
+    # Inicjalizacja
     pygame.display.flip()
-
-    # Limit FPS
     pygame.time.Clock().tick(30)
 
 # Zamknięcie Pygame
