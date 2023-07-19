@@ -13,11 +13,9 @@ from movement import *
 
 # Inicjalizacja Pygame
 pygame.init()
+pygame.font.init()
 
 car_rect = pygame.Rect(car_x, car_y, car_width, car_height)
-
-# Zmienna dzień
-dzien = 1
 
 # Główna pętla gry
 running = True
@@ -147,23 +145,13 @@ while running:
     pygame.draw.rect(screen, black,
                      (stamina_bar_x, stamina_bar_y, stamina_bar_width, stamina_bar_height), 1)
 
-    # Ustawienia prostokąta na dole ekranu
-    rectangle_width = 200
-    rectangle_height = 50
-    rectangle_x = (screen_width - rectangle_width) // 2
-    rectangle_y = screen_height - rectangle_height - 3
-
     # Rysowanie szarego prostokąta
     pygame.draw.rect(screen, gray, (rectangle_x, rectangle_y, rectangle_width, rectangle_height))
 
     # Rysowanie czarnej obramówki prostokąta
     pygame.draw.rect(screen, black, (rectangle_x, rectangle_y, rectangle_width, rectangle_height), 2)
 
-    # Rysowanie tekstu w prostokącie
-    font = pygame.font.SysFont(None, 30)
-    text = "Dzień: " + str(dzien)
-    text_surface = font.render(text, True, black)
-    text_rect = text_surface.get_rect(center=(rectangle_x + rectangle_width // 2, rectangle_y + rectangle_height // 2))
+    
     screen.blit(text_surface, text_rect)
 
     # Aktualizacja ekranu
