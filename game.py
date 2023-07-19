@@ -72,59 +72,40 @@ while running:
 
     else:
         if keys[pygame.K_w]:
-            car_rect.y -= car_speed
+            car_y -= car_speed
             move_keys_pressed = True
         if keys[pygame.K_s]:
-            car_rect.y += car_speed
+            car_y += car_speed
             move_keys_pressed = True
         if keys[pygame.K_a]:
-            car_rect.x -= car_speed
+            car_x -= car_speed
             move_keys_pressed = True
             car_image = car_image_mirrored
         if keys[pygame.K_d]:
-            car_rect.x += car_speed
+            car_x += car_speed
             move_keys_pressed = True
             car_image = car_image2
 
-    # Ograniczenie poruszania się postaci/pojazdu do granic mapy
-    if character_x < 0:
-        character_x = 0
-    if character_x > map_width - character_width:
-        character_x = map_width - character_width
-    if character_y < 0:
-        character_y = 0
-    if character_y > map_height - character_height:
-        character_y = map_height - character_height
-
-    if car_rect.x < 0:
-        car_rect.x = 0
-    if car_rect.x > map_width - car_width / 1.5:
-        car_rect.x = map_width - car_width / 1.5
-    if car_rect.y < 0:
-        car_rect.y = 0
-    if car_rect.y > map_height - car_height / 1.5:
-        car_rect.y = map_height - car_height / 1.5
-
     # Sprawdzenie kolizji z pojazdem i możliwość wejścia do niego
     if not player_in_car and not move_keys_pressed:
-        distance_to_car = pygame.math.Vector2(car_rect.x - character_x, car_rect.y - character_y).length()
+        distance_to_car = pygame.math.Vector2(car_x - character_x, car_y - character_y).length()
         if distance_to_car < 150:
             if keys[pygame.K_f]:
                 player_in_car = True
-                character_x, character_y = car_rect.x, car_rect.y
+                character_x, character_y = car_x, car_y
 
     # Sprawdzenie, czy gracz chce opuścić pojazd
     if player_in_car and keys[pygame.K_g]:
         player_in_car = False
-        character_x, character_y = car_rect.x, car_rect.y
+        character_x, character_y = car_x, car_y
 
     # Obliczenie pozycji kamery
     if not player_in_car:
         camera_x = character_x - screen_width // 2
         camera_y = character_y - screen_height // 2
     else:
-        camera_x = car_rect.x - screen_width // 2
-        camera_y = car_rect.y - screen_height // 2
+        camera_x = car_x - screen_width // 2
+        camera_y = car_y - screen_height // 2
 
     # Ograniczenie kamery do obszaru mapy
     if camera_x < 0:
@@ -188,13 +169,13 @@ while running:
             stamina = max_stamina
 
     # Narysowanie pojazdu
-    screen.blit(car_image, (car_rect.x - camera_x, car_rect.y - camera_y))
+    screen.blit(car_image, (car_x - camera_x, car_y - camera_y))
 
     # Narysowanie postaci
     if not player_in_car:
         screen.blit(current_image, (character_x - camera_x, character_y - camera_y))
     else:
-        screen.blit(current_image, (car_rect.x - camera_x, car_rect.y - camera_y))
+        screen.blit(current_image, (car_x - camera_x, car_y - camera_y))
 
     # Narysowanie paska staminy
     stamina_bar_rect = pygame.Rect(stamina_bar_x, stamina_bar_y, stamina / max_stamina * stamina_bar_width,
