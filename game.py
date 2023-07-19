@@ -8,31 +8,10 @@ from character import *
 from color import *
 from map import *
 from car import *
+from hud import *
 
 # Inicjalizacja Pygame
 pygame.init()
-
-
-
-# Ustawienia sprintu
-stamina = 2500
-max_stamina = 2500
-sprint_cost = 20
-regen_rate = 1
-regen_time = 3000  # 3 sekundy w milisekundach
-last_regen_time = pygame.time.get_ticks()
-
-# Ustawienia paska staminy
-stamina_bar_width = screen_width - 40
-stamina_bar_height = 10
-stamina_bar_x = 20
-stamina_bar_y = 10
-
-# Ustawienia HUD
-hud_x = 20
-hud_y = screen_height - 60
-hud_spacing = 20
-
 
 car_rect = pygame.Rect(car_x, car_y, car_width, car_height)
 
@@ -113,7 +92,24 @@ while running:
         camera_y = 0
     if camera_y > map_height - screen_height:
         camera_y = map_height - screen_height
-
+        
+    # Ograniczenie poruszania się postaci/pojazdu do granic mapy
+    if character_x < 0:
+        character_x = 0
+    if character_x > map_width - character_width:
+        character_x = map_width - character_width
+    if character_y < 0:
+        character_y = 0
+    if character_y > map_height - character_height:
+        character_y = map_height - character_height
+    if car_x < 0:
+        car_x = 0
+    if car_x > map_width - car_width / 1.5:
+        car_x = map_width - car_width / 1.5
+    if car_y < 0:
+        car_y = 0
+    if car_y > map_height - car_height / 1.5:
+        car_y = map_height - car_height / 1.5
     # Wyczyszczenie ekranu
     screen.fill((0, 0, 0))
 
