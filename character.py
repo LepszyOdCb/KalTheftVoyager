@@ -22,3 +22,9 @@ sprint_cost = 20
 regen_rate = 1
 regen_time = 3000  # 3 sekundy w milisekundach
 last_regen_time = pygame.time.get_ticks()
+
+#Ustawienia hudu
+hp = 10
+max_hp = 10
+hb = 10
+max_hb = 10

@@ -10,7 +10,7 @@ from map import *
 from car import *
 from hud import *
 from movement import *
-
+import hud
 # Inicjalizacja Pygame
 pygame.init()
 
@@ -138,7 +138,8 @@ while running:
     pygame.draw.rect(screen, black, (rectangle_x, rectangle_y, rectangle_width, rectangle_height), 2)
 
     screen.blit(text_surface, text_rect)
-
+    # Hud
+    hud.update_hud(screen, hp, max_hp, hb, max_hb)
     # Inicjalizacja
     pygame.display.flip()
     pygame.time.Clock().tick(30)

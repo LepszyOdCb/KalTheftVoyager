@@ -1,5 +1,7 @@
 import pygame
 
+
+
 def movement(keys, player_in_car, character_x, character_y, car_x, car_y, character_speed, car_speed, car_image, car_image_mirrored, car_image2):
     move_keys_pressed = False
 
