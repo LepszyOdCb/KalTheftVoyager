@@ -13,7 +13,11 @@ from movement import *
 
 # Inicjalizacja Pygame
 pygame.init()
-pygame.font.init()
+
+car_rect = pygame.Rect(car_x, car_y, car_width, car_height)
+
+# Zmienna dzień
+dzien = 1
 
 # Główna pętla gry
 running = True
@@ -24,23 +28,9 @@ while running:
 
     # Poruszanie postacią lub pojazdem
     keys = pygame.key.get_pressed()
-    move_keys_pressed = False
 
-    character_x, character_y, car_x, car_y, move_keys_pressed, car_image = movement(keys, character_x, character_y, car_x, car_y, character_speed, car_speed, move_keys_pressed, player_in_car, car_image, car_image_mirrored, car_image2)
-
-    # Sprawdzenie kolizji z pojazdem i możliwość wejścia do niego
-    if not player_in_car and not move_keys_pressed:
-        distance_to_car = pygame.math.Vector2(car_x - character_x, car_y - character_y).length()
-        if distance_to_car < 150:
-            if keys[pygame.K_f]:
-                player_in_car = True
-                character_x, character_y = car_x, car_y
-
-    # Sprawdzenie, czy gracz chce opuścić pojazd
-    if player_in_car and keys[pygame.K_g]:
-        player_in_car = False
-        character_x, character_y = car_x, car_y
-
+    player_in_car, character_x, character_y, car_x, car_y, move_keys_pressed, car_image = movement(keys, player_in_car, character_x, character_y, car_x, car_y, character_speed, car_speed, car_image, car_image_mirrored, car_image2)
+    
     # Obliczenie pozycji kamery
     if not player_in_car:
         camera_x = character_x - screen_width // 2
