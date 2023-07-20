@@ -139,7 +139,8 @@ while running:
 
     screen.blit(text_surface, text_rect)
     # Hud
-    hud.update_hud(screen, hp, max_hp, hb, max_hb)
+    hud.update_hud(screen, hp, max_hp, hb, max_hb, map_image, character_x, character_y, car_x, car_y, player_in_car)
+
     # Inicjalizacja
     pygame.display.flip()
     pygame.time.Clock().tick(30)
