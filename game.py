@@ -15,11 +15,6 @@ from movement import *
 # Inicjalizacja Pygame
 pygame.init()
 
-
-
-# Zmienna dzień
-dzien = 1
-
 # Główna pętla gry
 running = True
 while running:
@@ -33,40 +28,13 @@ while running:
     player_in_car, character_x, character_y, car_x, car_y, move_keys_pressed, car_image = movement(keys, player_in_car, character_x, character_y, car_x, car_y, character_speed, car_speed, car_image, car_image_mirrored, car_image2)
     
     # Obliczenie pozycji kamery
-    if not player_in_car:
-        camera_x = character_x - screen_width // 2
-        camera_y = character_y - screen_height // 2
-    else:
-        camera_x = car_x - screen_width // 2
-        camera_y = car_y - screen_height // 2
+    camera_x, camera_y = camera_position(player_in_car, character_x, character_y, car_x, car_y, screen_width, screen_height, map_width, map_height)
 
-    # Ograniczenie kamery do obszaru mapy
-    if camera_x < 0:
-        camera_x = 0
-    if camera_x > map_width - screen_width:
-        camera_x = map_width - screen_width
-    if camera_y < 0:
-        camera_y = 0
-    if camera_y > map_height - screen_height:
-        camera_y = map_height - screen_height
-        
     # Ograniczenie poruszania się postaci/pojazdu do granic mapy
-    if character_x < 0:
-        character_x = 0
-    if character_x > map_width - character_width:
-        character_x = map_width - character_width
-    if character_y < 0:
-        character_y = 0
-    if character_y > map_height - character_height:
-        character_y = map_height - character_height
-    if car_x < 0:
-        car_x = 0
-    if car_x > map_width - car_width / 1.5:
-        car_x = map_width - car_width / 1.5
-    if car_y < 0:
-        car_y = 0
-    if car_y > map_height - car_height / 1.5:
-        car_y = map_height - car_height / 1.5
+    character_x, character_y, car_x, car_y = limit_movement(character_x, character_y, car_x, car_y, map_width, map_height, character_width, character_height, car_width, car_height, player_in_car)
+    
+    hp,hb = hphb_limiter(hp, hb, hphblimit)
+
     # Wyczyszczenie ekranu
     screen.fill((0, 0, 0))
 
@@ -94,13 +62,17 @@ while running:
             stamina -= sprint_cost
             if stamina < 0:
                 stamina = 0
-    else:
+                hb -= 1
+    if hb >= 2:
         if current_time - last_regen_time > regen_time and stamina < max_stamina:
             stamina += regen_rate
             if stamina > max_stamina:
                 stamina = max_stamina
             last_regen_time = current_time
-
+    if hb <= 2:
+        regen_rate = 00.1
+    if hb > 2:
+        regen_rate = 1
     # Zmiana prędkości poruszania się postaci/pojazdu w zależności od sprintu
     if sprinting and stamina > 0 and not player_in_car:
         character_speed = 10
@@ -117,7 +89,7 @@ while running:
         stamina += regen_rate
         if stamina > max_stamina:
             stamina = max_stamina
-
+    
     # Narysowanie pojazdu
     screen.blit(car_image, (car_x - camera_x, car_y - camera_y))
 
@@ -128,20 +100,16 @@ while running:
         screen.blit(current_image, (car_x - camera_x, car_y - camera_y))
 
     # Narysowanie paska staminy
-    stamina_bar_rect = pygame.Rect(stamina_bar_x, stamina_bar_y, stamina / max_stamina * stamina_bar_width,
-                                   stamina_bar_height)
+    stamina_bar_rect = pygame.Rect(stamina_bar_x, stamina_bar_y, stamina / max_stamina * stamina_bar_width, stamina_bar_height)
     pygame.draw.rect(screen, gray, stamina_bar_rect)
-    pygame.draw.rect(screen, black,
-                     (stamina_bar_x, stamina_bar_y, stamina_bar_width, stamina_bar_height), 1)
+    pygame.draw.rect(screen, black, (stamina_bar_x, stamina_bar_y, stamina_bar_width, stamina_bar_height), 1)
 
     # Rysowanie prostokąta
     pygame.draw.rect(screen, gray, (rectangle_x, rectangle_y, rectangle_width, rectangle_height))
     pygame.draw.rect(screen, black, (rectangle_x, rectangle_y, rectangle_width, rectangle_height), 2)
-
     screen.blit(text_surface, text_rect)
     # Hud
     hud.update_hud(screen, hp, max_hp, hb, max_hb, map_image, character_x, character_y, car_x, car_y, player_in_car)
-
     # Inicjalizacja
     pygame.display.flip()
     pygame.time.Clock().tick(30)

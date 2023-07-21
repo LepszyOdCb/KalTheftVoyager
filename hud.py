@@ -12,6 +12,7 @@ stamina_bar_width = screen_width - 40
 stamina_bar_height = 10
 stamina_bar_x = 20
 stamina_bar_y = 10
+stamina_bar_rect = pygame.Rect(stamina_bar_x, stamina_bar_y, stamina / max_stamina * stamina_bar_width, stamina_bar_height)
 
 # Ustawienia HUD
 hud_x = 20
@@ -34,8 +35,8 @@ text_surface = font.render(text, True, black)
 text_rect = text_surface.get_rect(center=(rectangle_x + rectangle_width // 2, rectangle_y + rectangle_height // 2))
 
 # Stałe
-HEART_SIZE = (40, 40)
-HUNGER_SIZE = (40, 40)
+HEART_SIZE = (50, 50)
+HUNGER_SIZE = (50, 50)
 HEART_SPACING = 5
 HUNGER_SPACING = 5
 HUD_OFFSET_X = 20
@@ -101,3 +102,12 @@ def draw_minimap(screen, map_image, player_x, player_y, car_x, car_y, player_in_
 
     # Draw the minimap on the main screen
     screen.blit(minimap_surface, (minimap_x, minimap_y))
+
+hphblimit = 0
+def hphb_limiter(hp, hb, hphblimit):
+    
+    if hb < hphblimit:
+        hb += 1
+    if hp < 0:
+        hp += 1
+    return hp, hb
