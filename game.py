@@ -1,6 +1,7 @@
 import pygame
 import sys
 import time
+import hud
 
 from settings import *
 from images import *
@@ -10,11 +11,11 @@ from map import *
 from car import *
 from hud import *
 from movement import *
-import hud
+
 # Inicjalizacja Pygame
 pygame.init()
 
-car_rect = pygame.Rect(car_x, car_y, car_width, car_height)
+
 
 # Zmienna dzień
 dzien = 1

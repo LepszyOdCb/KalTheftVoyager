@@ -71,7 +71,7 @@ def update_hud(screen, hp, max_hp, hb, max_hb, map_image, player_x, player_y, ca
             screen.blit(hunger_image, (x, y), (0, 0, 0, 0))
     draw_minimap(screen, map_image, player_x, player_y, car_x, car_y, player_in_car)
 
-# Funkcja rysująca mini-mapa
+# Funkcja rysująca minimape
 def draw_minimap(screen, map_image, player_x, player_y, car_x, car_y, player_in_car):
     minimap_size = 250
     minimap_border = 10  # Increased border size to 15px10
