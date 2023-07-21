@@ -24,7 +24,7 @@ while running:
 
     # Poruszanie postacią lub pojazdem
     keys = pygame.key.get_pressed()
-
+    sprinting = keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]
     player_in_car, character_x, character_y, car_x, car_y, move_keys_pressed, car_image = movement(keys, player_in_car, character_x, character_y, car_x, car_y, character_speed, car_speed, car_image, car_image_mirrored, car_image2)
     
     # Obliczenie pozycji kamery
@@ -33,6 +33,8 @@ while running:
     # Ograniczenie poruszania się postaci/pojazdu do granic mapy
     character_x, character_y, car_x, car_y = limit_movement(character_x, character_y, car_x, car_y, map_width, map_height, character_width, character_height, car_width, car_height, player_in_car)
     
+    # Aktualizacja staminy i hp
+    stamina, hb, regen_rate = update_stamina(stamina, sprinting, sprint_cost, max_stamina, regen_rate, pygame.time.get_ticks(), last_regen_time, hb)
     hp,hb = hphb_limiter(hp, hb, hphblimit)
 
     # Wyczyszczenie ekranu
@@ -53,26 +55,8 @@ while running:
         current_image = player_image
 
     # Sprawdzenie, czy przycisk Shift jest wciśnięty
-    sprinting = keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]
+    
 
-    # Aktualizacja staminy
-    current_time = pygame.time.get_ticks()
-    if sprinting:
-        if stamina > 0:
-            stamina -= sprint_cost
-            if stamina < 0:
-                stamina = 0
-                hb -= 1
-    if hb >= 2:
-        if current_time - last_regen_time > regen_time and stamina < max_stamina:
-            stamina += regen_rate
-            if stamina > max_stamina:
-                stamina = max_stamina
-            last_regen_time = current_time
-    if hb <= 2:
-        regen_rate = 00.1
-    if hb > 2:
-        regen_rate = 1
     # Zmiana prędkości poruszania się postaci/pojazdu w zależności od sprintu
     if sprinting and stamina > 0 and not player_in_car:
         character_speed = 10
@@ -108,8 +92,10 @@ while running:
     pygame.draw.rect(screen, gray, (rectangle_x, rectangle_y, rectangle_width, rectangle_height))
     pygame.draw.rect(screen, black, (rectangle_x, rectangle_y, rectangle_width, rectangle_height), 2)
     screen.blit(text_surface, text_rect)
+
     # Hud
     hud.update_hud(screen, hp, max_hp, hb, max_hb, map_image, character_x, character_y, car_x, car_y, player_in_car)
+    
     # Inicjalizacja
     pygame.display.flip()
     pygame.time.Clock().tick(30)

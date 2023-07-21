@@ -28,3 +28,25 @@ hp = 10
 max_hp = 10
 hb = 10
 max_hb = 10
+
+def update_stamina(stamina, sprinting, sprint_cost, max_stamina, regen_rate, current_time, last_regen_time, hb):
+    # Aktualizacja staminy
+    if sprinting:
+        if stamina > 0:
+            stamina -= sprint_cost
+            if stamina < 0:
+                stamina = 0
+                hb -= 1
+                print(hb)
+    if hb >= 2:
+        if current_time - last_regen_time > regen_time and stamina < max_stamina:
+            stamina += regen_rate
+            if stamina > max_stamina:
+                stamina = max_stamina
+            last_regen_time = current_time
+    if hb <= 2:
+        regen_rate = 000.1
+    if hb > 2:
+        regen_rate = 1
+
+    return stamina, hb, regen_rate
