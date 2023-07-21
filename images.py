@@ -10,3 +10,5 @@ car_image2 = pygame.image.load("images/car.png").convert_alpha()
 car_image_mirrored = pygame.image.load("images/car_mirrored.png").convert_alpha()
 heart_image = pygame.image.load("images/heart.png").convert_alpha()
 hunger_image = pygame.image.load("images/hunger.png").convert_alpha()
+logo_image = pygame.image.load("images/logo.png").convert()
+

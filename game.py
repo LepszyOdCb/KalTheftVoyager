@@ -14,6 +14,7 @@ from movement import *
 
 # Inicjalizacja Pygame
 pygame.init()
+pygame.display.set_icon(logo_image)
 
 # Główna pętla gry
 running = True
