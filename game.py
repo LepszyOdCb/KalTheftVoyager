@@ -33,9 +33,12 @@ while running:
     # Ograniczenie poruszania się postaci/pojazdu do granic mapy
     character_x, character_y, car_x, car_y = limit_movement(character_x, character_y, car_x, car_y, map_width, map_height, character_width, character_height, car_width, car_height, player_in_car)
     
-    # Aktualizacja staminy i hp
-    stamina, hb, regen_rate = update_stamina(stamina, sprinting, sprint_cost, max_stamina, regen_rate, pygame.time.get_ticks(), last_regen_time, hb)
+    # Aktualizacja sprintu i hp
+    stamina, hb, regen_rate, car_speed, character_speed = update_stamina(stamina, sprinting, sprint_cost, max_stamina, regen_rate, pygame.time.get_ticks(), last_regen_time, hb, character_speed, car_speed, player_in_car)
     hp,hb = hphb_limiter(hp, hb, hphblimit)
+
+    # Aktualizacja animacji
+    current_image, frame_counter, current_frame = animations(move_keys_pressed, frame_counter, frame_delay, current_frame, animation_frames, player_image)
 
     # Wyczyszczenie ekranu
     screen.fill((0, 0, 0))
@@ -44,40 +47,9 @@ while running:
     map_rect = pygame.Rect(camera_x, camera_y, screen_width, screen_height)
     screen.blit(map_image, (0, 0), area=map_rect)
 
-    # Animacja postaci
-    if move_keys_pressed:
-        frame_counter += 1
-        if frame_counter >= frame_delay:
-            frame_counter = 0
-            current_frame = (current_frame + 1) % len(animation_frames)
-        current_image = animation_frames[current_frame]
-    else:
-        current_image = player_image
-
-    # Sprawdzenie, czy przycisk Shift jest wciśnięty
-    
-
-    # Zmiana prędkości poruszania się postaci/pojazdu w zależności od sprintu
-    if sprinting and stamina > 0 and not player_in_car:
-        character_speed = 10
-    else:
-        character_speed = 5
-
-    if sprinting and stamina > 0 and player_in_car:
-        car_speed = 20
-    else:
-        car_speed = 10
-
-    # Regeneracja staminy
-    if not sprinting and stamina < max_stamina:
-        stamina += regen_rate
-        if stamina > max_stamina:
-            stamina = max_stamina
-    
-    # Narysowanie pojazdu
+    # Narysowanie pojazdu i postaci
     screen.blit(car_image, (car_x - camera_x, car_y - camera_y))
 
-    # Narysowanie postaci
     if not player_in_car:
         screen.blit(current_image, (character_x - camera_x, character_y - camera_y))
     else:
