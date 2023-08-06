@@ -1,6 +1,5 @@
 import pygame
 import sys
-import time
 import hud
 
 from settings import *
@@ -11,6 +10,7 @@ from map import *
 from car import *
 from hud import *
 from movement import *
+from inventory import *
 
 # Inicjalizacja Pygame
 pygame.init()
@@ -21,11 +21,13 @@ running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
+            save_slots_to_file(slots)
             running = False
 
     # Poruszanie postacią lub pojazdem
     keys = pygame.key.get_pressed()
     sprinting = keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]
+    cursor_pos = pygame.mouse.get_pos()
     player_in_car, character_x, character_y, car_x, car_y, move_keys_pressed, car_image = movement(keys, player_in_car, character_x, character_y, car_x, car_y, character_speed, car_speed, car_image, car_image_mirrored, car_image2)
     
     # Obliczenie pozycji kamery
@@ -43,7 +45,7 @@ while running:
 
     # Wyczyszczenie ekranu
     screen.fill((0, 0, 0))
-
+    
     # Narysowanie mapy
     map_rect = pygame.Rect(camera_x, camera_y, screen_width, screen_height)
     screen.blit(map_image, (0, 0), area=map_rect)
@@ -68,6 +70,11 @@ while running:
 
     # Hud
     hud.update_hud(screen, hp, max_hp, hb, max_hb, map_image, character_x, character_y, car_x, car_y, player_in_car)
+    
+    is_cursor_on_slot(inventory_x, inventory_y, inventory_gap, inventory_height, cursor_pos)
+    
+    # Ekwipunek 
+    draw_inventory(inventory_x, inventory_y, slots, items_images)
     
     # Inicjalizacja
     pygame.display.flip()

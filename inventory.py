@@ -1,160 +1,82 @@
 import pygame
 import csv
-import os
 
-# Inicjalizacja pygame
-pygame.init()
+from color import *
+from settings import *
+from images import *
 
-# Stałe dotyczące ekranu
-SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
-CELL_SIZE = 50
-NUM_ROWS, NUM_COLS = 4, 5
-INVENTORY_SIZE = NUM_ROWS * NUM_COLS
-SLOT_PADDING = 5
-SLOT_BORDER_SIZE = 2
+inventory_height = 64
+inventory_widht = 64
+inventory_x = screen_width / 2 - inventory_widht / 2
+inventory_y = screen_width / 4
+inventory_gap = 8
+inventory_open = True
 
-# Stałe dotyczące kolorów
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-GRAY = (128, 128, 128)
+image_size = 64
 
-# Ładowanie obrazka przedmiotu
-item_image = pygame.image.load('images/bread.png')
+slot_vertically = 5
+slot_horizontally = slot_vertically
+slot_amount = 30
 
-# Tworzenie ekranu
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption('Jebany w dupe ekwipunek')
+def read_slots_from_file():
+    slots = []
+    with open("inventory.csv", "r", newline='') as file:
+        csv_reader = csv.reader(file)
+        for row in csv_reader:
+            slots.append(row[1])
+    return tuple(slots)
 
-# Funkcja do rysowania slotu
-def draw_slot(x, y, item=None, surface=None):
-    target_surface = screen if surface is None else surface
-    pygame.draw.rect(target_surface, WHITE, (x, y, CELL_SIZE, CELL_SIZE))
-    pygame.draw.rect(target_surface, BLACK, (x, y, CELL_SIZE, CELL_SIZE), SLOT_BORDER_SIZE)
-    if item:
-        target_surface.blit(item, (x, y))
+def save_slots_to_file(slots):
+    with open("inventory.csv", "w", newline='') as file:
+        csv_writer = csv.writer(file)
+        for i, slot in enumerate(slots, start=1):
+            csv_writer.writerow([f"slot_{i}", slot])
 
-# Funkcja do wczytania ekwipunku z pliku CSV
-def load_inventory():
-    if not os.path.exists('inventory.csv'):
-        create_empty_inventory()
-    with open('inventory.csv', 'r') as file:
-        inventory_reader = csv.reader(file)
-        inventory = [int(item) for item in next(inventory_reader)]
-    return inventory
+slots = list(read_slots_from_file())
 
-# Funkcja do zapisania ekwipunku do pliku CSV
-def save_inventory(inventory):
-    with open('inventory.csv', 'w', newline='') as file:
-        inventory_writer = csv.writer(file)
-        inventory_writer.writerow(inventory)
+# Read the values of slots from the CSV file
+slot_1, slot_2, slot_3, slot_4, slot_5, slot_6, slot_7, slot_8, slot_9, slot_10, slot_11, slot_12, slot_13, slot_14, slot_15, slot_16, slot_17, slot_18, slot_19, slot_20, slot_21, slot_22, slot_23, slot_24, slot_25, slot_26, slot_27, slot_28, slot_29, slot_30 = read_slots_from_file()
+        
+def draw_inventory(inventory_x, inventory_y, slots, item_image):
+    item_images = [None, items_images[slot_1], items_images[slot_2], items_images[slot_3], items_images[slot_4], items_images[slot_5], items_images[slot_6], items_images[slot_7], items_images[slot_9], items_images[slot_9], items_images[slot_10], items_images[slot_11], items_images[slot_12], items_images[slot_13], items_images[slot_14], items_images[slot_15], items_images[slot_16], items_images[slot_17], items_images[slot_18], items_images[slot_19], items_images[slot_20], items_images[slot_21], items_images[slot_22], items_images[slot_23], items_images[slot_24], items_images[slot_25], items_images[slot_26], items_images[slot_27], items_images[slot_28], items_images[slot_29], items_images[slot_30]]
+    for col in range(1, slot_amount + 1):
+        if col < 6:
+            item_image = item_images[col]
+            pygame.draw.rect(screen, gray,  (inventory_gap, inventory_y + (inventory_gap + inventory_height) * col, inventory_widht, inventory_height))  
+            pygame.draw.rect(screen, black, (inventory_gap, inventory_y + (inventory_gap + inventory_height) * col, inventory_widht, inventory_height), 2)
+            screen.blit(item_image,         (inventory_gap, inventory_y + (inventory_gap + inventory_height) * col))
+        elif inventory_open == True:
+            if col > 5 and col < 11:
+                item_image = item_images[col]
+                pygame.draw.rect(screen, gray,  (inventory_x + (inventory_gap + inventory_height), inventory_y + (inventory_gap + inventory_height) * (col - 5), inventory_widht, inventory_height))  
+                pygame.draw.rect(screen, black, (inventory_x + (inventory_gap + inventory_height), inventory_y + (inventory_gap + inventory_height) * (col - 5), inventory_widht, inventory_height), 2)
+                screen.blit(item_image,         (inventory_x + (inventory_gap + inventory_height), inventory_y + (inventory_gap + inventory_height) * (col - 5)))
+            elif col > 10 and col < 16:
+                item_image = item_images[col]
+                pygame.draw.rect(screen, gray,  (inventory_x + (inventory_gap + inventory_height) * 2, inventory_y + (inventory_gap + inventory_height) * (col - 10), inventory_widht, inventory_height))  
+                pygame.draw.rect(screen, black, (inventory_x + (inventory_gap + inventory_height) * 2, inventory_y + (inventory_gap + inventory_height) * (col - 10), inventory_widht, inventory_height), 2)
+                screen.blit(item_image,         (inventory_x + (inventory_gap + inventory_height) * 2, inventory_y + (inventory_gap + inventory_height) * (col - 10)))
+            elif col > 15 and col < 21:
+                item_image = item_images[col]
+                pygame.draw.rect(screen, gray,  (inventory_x + (inventory_gap + inventory_height) * 3, inventory_y + (inventory_gap + inventory_height) * (col - 15), inventory_widht, inventory_height))  
+                pygame.draw.rect(screen, black, (inventory_x + (inventory_gap + inventory_height) * 3, inventory_y + (inventory_gap + inventory_height) * (col - 15), inventory_widht, inventory_height), 2)
+                screen.blit(item_image,         (inventory_x + (inventory_gap + inventory_height) * 3, inventory_y + (inventory_gap + inventory_height) * (col - 15)))
+            elif col > 20 and col < 26:
+                item_image = item_images[col]
+                pygame.draw.rect(screen, gray,  (inventory_x + (inventory_gap + inventory_height) * 4, inventory_y + (inventory_gap + inventory_height) * (col - 20), inventory_widht, inventory_height))  
+                pygame.draw.rect(screen, black, (inventory_x + (inventory_gap + inventory_height) * 4, inventory_y + (inventory_gap + inventory_height) * (col - 20), inventory_widht, inventory_height), 2)
+                screen.blit(item_image,         (inventory_x + (inventory_gap + inventory_height) * 4, inventory_y + (inventory_gap + inventory_height) * (col - 20)))
+            elif col > 25 and col < 31:
+                item_image = item_images[col]
+                pygame.draw.rect(screen, gray,  (inventory_x + (inventory_gap + inventory_height) * 5, inventory_y + (inventory_gap + inventory_height) * (col - 25), inventory_widht, inventory_height))  
+                pygame.draw.rect(screen, black, (inventory_x + (inventory_gap + inventory_height) * 5, inventory_y + (inventory_gap + inventory_height) * (col - 25), inventory_widht, inventory_height), 2)
+                screen.blit(item_image,         (inventory_x + (inventory_gap + inventory_height) * 5, inventory_y + (inventory_gap + inventory_height) * (col - 25)))
 
-# Funkcja do utworzenia pustego ekwipunku w pliku CSV
-def create_empty_inventory():
-    empty_inventory = [0] * (INVENTORY_SIZE + 4)
-    save_inventory(empty_inventory)
-
-# Funkcja do rysowania ekwipunku
-def draw_inventory(inventory):
-    for i in range(4):
-        draw_slot(10, i * (CELL_SIZE + SLOT_PADDING) + 10, item_image if inventory[i] else None)
-    for i in range(NUM_ROWS):
-        for j in range(NUM_COLS):
-            slot_index = i * NUM_COLS + j + 4
-            draw_slot(SCREEN_WIDTH // 2 + j * (CELL_SIZE + SLOT_PADDING),
-                      i * (CELL_SIZE + SLOT_PADDING) + 10, item_image if inventory[slot_index] else None)
-
-# Główna pętla gry
-def main():
-    clock = pygame.time.Clock()
-    inventory = load_inventory()
-    dragging_item = None
-    dragging_from_quickbar = False
-
-    # Dodanie chleba na 16 slocie (indeks 15)
-    inventory[15] = 1
-
-    while True:
-        screen.fill(GRAY)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                save_inventory(inventory)
-                pygame.quit()
-                return
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_e:
-                    save_inventory(inventory)
-                    pygame.quit()
-                    return
-                elif event.key == pygame.K_q:
-                    # Przenoszenie przedmiotu z paska szybkiego wyboru do ekwipunku
-                    if dragging_item is not None and 0 <= dragging_item < 4:
-                        mouse_x, mouse_y = pygame.mouse.get_pos()
-                        row_index = (mouse_y - 10) // (CELL_SIZE + SLOT_PADDING)
-                        slot_index = row_index * NUM_COLS
-                        target_index = slot_index + (dragging_item % NUM_COLS) + 4
-                        if 4 <= target_index < INVENTORY_SIZE + 4:
-                            inventory[dragging_item], inventory[target_index] = inventory[target_index], inventory[dragging_item]
-                            dragging_item = None
-                elif event.key == pygame.K_1 or event.key == pygame.K_2 or event.key == pygame.K_3 or event.key == pygame.K_4:
-                    # Przenoszenie przedmiotu z ekwipunku do paska szybkiego wyboru
-                    if dragging_item is not None and 4 <= dragging_item < INVENTORY_SIZE + 4:
-                        quickbar_slot = event.key - pygame.K_1
-                        inventory[quickbar_slot] = inventory[dragging_item]
-                        inventory[dragging_item] = 0
-                        dragging_item = None
-
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    mouse_x, mouse_y = pygame.mouse.get_pos()
-                    for i in range(4):
-                        slot_rect = pygame.Rect(10, i * (CELL_SIZE + SLOT_PADDING) + 10, CELL_SIZE, CELL_SIZE)
-                        if slot_rect.collidepoint(mouse_x, mouse_y):
-                            dragging_item = i
-                            dragging_from_quickbar = True
-                            break
-                    else:
-                        for i in range(NUM_ROWS):
-                            for j in range(NUM_COLS):
-                                slot_index = i * NUM_COLS + j + 4
-                                slot_rect = pygame.Rect(SCREEN_WIDTH // 2 + j * (CELL_SIZE + SLOT_PADDING),
-                                                        i * (CELL_SIZE + SLOT_PADDING) + 10, CELL_SIZE, CELL_SIZE)
-                                if slot_rect.collidepoint(mouse_x, mouse_y) and inventory[slot_index]:
-                                    dragging_item = slot_index
-                                    dragging_from_quickbar = False
-                                    break
-            elif event.type == pygame.MOUSEBUTTONUP:
-                if event.button == 1:
-                    mouse_x, mouse_y = pygame.mouse.get_pos()
-                    for i in range(NUM_ROWS):
-                        for j in range(NUM_COLS):
-                            slot_index = i * NUM_COLS + j + 4
-                            slot_rect = pygame.Rect(SCREEN_WIDTH // 2 + j * (CELL_SIZE + SLOT_PADDING),
-                                                    i * (CELL_SIZE + SLOT_PADDING) + 10, CELL_SIZE, CELL_SIZE)
-                            if slot_rect.collidepoint(mouse_x, mouse_y) and dragging_item:
-                                if dragging_from_quickbar:
-                                    # Przenoszenie przedmiotu z paska szybkiego wyboru do ekwipunku
-                                    target_index = i * NUM_COLS + j
-                                    inventory[dragging_item], inventory[target_index] = inventory[target_index], inventory[dragging_item]
-                                else:
-                                    # Przenoszenie przedmiotu wewnątrz ekwipunku
-                                    target_index = slot_index
-                                    inventory[dragging_item], inventory[target_index] = inventory[target_index], inventory[dragging_item]
-                                dragging_item = None
-                                break
-                    else:
-                        dragging_item = None
-
-        if dragging_item is not None:
-            mouse_x, mouse_y = pygame.mouse.get_pos()
-            # Rysowanie przenoszonego przedmiotu na nowej powierzchni
-            dragged_item_surface = pygame.Surface((CELL_SIZE, CELL_SIZE), pygame.SRCALPHA)
-            draw_slot(0, 0, item_image if inventory[dragging_item] else None, dragged_item_surface)
-            screen.blit(dragged_item_surface, (mouse_x - CELL_SIZE // 2, mouse_y - CELL_SIZE // 2))
-
-        draw_inventory(inventory)
-        pygame.display.flip()
-        clock.tick(60)
-
-if __name__ == '__main__':
-    main()
+def is_cursor_on_slot_1(inventory_x, inventory_y, inventory_gap, inventory_height, cursor_pos):
+    for i in range(1, slot_vertically + 1):
+        is_q_pressed = pygame.key.get_pressed()[pygame.K_q]
+        if (inventory_gap <= cursor_pos[0] <= (inventory_gap + inventory_widht)) and (inventory_y + (inventory_gap + inventory_height)*i <= cursor_pos[1] <= (inventory_y + (inventory_gap + inventory_height)*i + image_size)) and (is_q_pressed):
+            slots[i-1], slots[5] = slots[5], slots[i-1]
+            save_slots_to_file(slots)
+            return print(i)
+        
