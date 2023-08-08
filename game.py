@@ -1,6 +1,6 @@
 import pygame
 import sys
-import hud
+import pygame.time
 
 from settings import *
 from images import *
@@ -18,12 +18,14 @@ pygame.display.set_icon(logo_image)
 
 # Główna pętla gry
 running = True
+last_refresh_time = pygame.time.get_ticks() 
 while running:
+    current_time = pygame.time.get_ticks()  
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             save_slots_to_file(slots)
             running = False
-
+    
     # Poruszanie postacią lub pojazdem
     keys = pygame.key.get_pressed()
     sprinting = keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]
@@ -38,7 +40,6 @@ while running:
     
     # Aktualizacja sprintu i hp
     stamina, hb, regen_rate, car_speed, character_speed = update_stamina(stamina, sprinting, sprint_cost, max_stamina, regen_rate, pygame.time.get_ticks(), last_regen_time, hb, character_speed, car_speed, player_in_car)
-    hp,hb = hphb_limiter(hp, hb, hphblimit)
 
     # Aktualizacja animacji
     current_image, frame_counter, current_frame = animations(move_keys_pressed, frame_counter, frame_delay, current_frame, animation_frames, player_image)
@@ -69,12 +70,14 @@ while running:
     screen.blit(text_surface, text_rect)
 
     # Hud
-    hud.update_hud(screen, hp, max_hp, hb, max_hb, map_image, character_x, character_y, car_x, car_y, player_in_car)
+    draw_minimap(screen, map_image, character_x, character_y, car_x, car_y, player_in_car)
+    draw_hp_hb(screen, hp, hb, hp_max, hb_max)
+
+    # Ekwipunek
+    draw_inventory(screen, inventory_x, inventory_y, slots, items_images, inventory_open, keys)
+    is_cursor_on_slot(inventory_x, inventory_y, inventory_gap, inventory_height, cursor_pos, keys, slots)
+    quick_slot_usage(keys, eating_sound, screen, hp, hb, hp_max, hb_max)
     
-    is_cursor_on_slot(inventory_x, inventory_y, inventory_gap, inventory_height, cursor_pos)
-    
-    # Ekwipunek 
-    draw_inventory(inventory_x, inventory_y, slots, items_images)
     
     # Inicjalizacja
     pygame.display.flip()

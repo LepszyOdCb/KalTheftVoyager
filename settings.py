@@ -9,3 +9,7 @@ pygame.display.set_caption("Kal Theft Voyager")
 # Ustawienia kamery
 camera_width = screen_width
 camera_height = screen_height
+
+# Lokalizacja plików
+
+your_file_directory = ""
