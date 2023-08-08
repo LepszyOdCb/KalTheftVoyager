@@ -25,7 +25,9 @@ while running:
         if event.type == pygame.QUIT:
             save_slots_to_file(slots)
             running = False
-    
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_e:
+            inventory_open = not inventory_open
+            print(inventory_open)
     # Poruszanie postacią lub pojazdem
     keys = pygame.key.get_pressed()
     sprinting = keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]

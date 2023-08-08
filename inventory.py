@@ -13,7 +13,7 @@ inventory_widht = 64
 inventory_gap = 8
 inventory_x = screen_width / 2 - (inventory_widht + inventory_gap) * 2.5
 inventory_y = screen_width / 4
-inventory_open = False
+inventory_open = True
 
 image_size = 64
 
@@ -115,7 +115,8 @@ def draw_inventory(screen, inventory_x, inventory_y, slots, items_images, invent
     return item_image, inventory_open
 
 def is_cursor_on_slot(inventory_x, inventory_y, inventory_gap, inventory_height, cursor_pos, keys, slots):
-    if inventory_open:
+    global inventory_open
+    if inventory_open == True:
         for i in range(1, slot_vertically + 1): 
             is_q_pressed = pygame.key.get_pressed()[pygame.K_q]
             slot_x = inventory_gap
