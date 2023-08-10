@@ -2,19 +2,12 @@ import pygame
 
 from images import *
 
-
 # Ustawienia postaci
-character_width = 140
+character_width = 200
 character_height = 150
 character_x = 9600
 character_y = 9830
 character_speed = 5
-
-# Ustawienia animacji postaci
-animation_frames = [player_moving1_image, player_moving2_image]
-current_frame = 0
-frame_counter = 0
-frame_delay = 5  # Opóźnienie między klatkami animacji
 
 # Ustawienia sprintu
 stamina = 2500
@@ -64,15 +57,12 @@ def update_stamina(stamina, sprinting, sprint_cost, max_stamina, regen_rate, cur
         car_speed = 10        
     return stamina, hb, regen_rate, car_speed, character_speed
 
+current_mouth  = mouth["mouth_2"]
+current_hair   = hair["hair_1"]
+current_beard  = beard["beard_1"]
+current_tshirt = tshirts["tshirt_1"]
+current_arms   = arms["arms_1a"]
+current_legs   = legs["legs_1"]
+current_feet   = feet["feet_1"]
 
-def animations(move_keys_pressed, frame_counter, frame_delay, current_frame, animation_frames, player_image):
-    # Animacja postaci
-    if move_keys_pressed:
-        frame_counter += 1
-        if frame_counter >= frame_delay:
-            frame_counter = 0
-            current_frame = (current_frame + 1) % len(animation_frames)
-        current_image = animation_frames[current_frame]
-    else:
-        current_image = player_image
-    return current_image, frame_counter, current_frame
+#def draw_player(player_in_car, camera_x, camera_y):
