@@ -1,8 +1,9 @@
 import pygame
 
+animations_frequency = 60
+ticks_since_last_animations = 0
 
-
-def movement(keys, player_in_car, character_x, character_y, car_x, car_y, character_speed, car_speed, car_image, car_image_mirrored, car_image2):
+def movement(keys, player_in_car, character_x, character_y, car_x, car_y, character_speed, car_speed, car_image, car_image_mirrored, car_image_2):
     move_keys_pressed = False
 
     if not player_in_car:
@@ -42,10 +43,18 @@ def movement(keys, player_in_car, character_x, character_y, car_x, car_y, charac
         if keys[pygame.K_d]:
             car_x += car_speed
             move_keys_pressed = True
-            car_image = car_image2
+            car_image = car_image_2
 
         if keys[pygame.K_g]:
             player_in_car = False
             character_x, character_y = car_x, car_y
-
+    
+    #if move_keys_pressed == True:
+    #    ticks_since_last_animations += 1
+    #    
+    #    if ticks_since_last_animations >= animations_frequency:
+    #        ticks_since_last_animations = 0
+    #        if 
+    #elif move_keys_pressed == False:
+    #    current_feet = 
     return player_in_car, character_x, character_y, car_x, car_y, move_keys_pressed, car_image

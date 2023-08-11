@@ -1,6 +1,7 @@
 import pygame
 
 from images import *
+from map import *
 
 # Ustawienia postaci
 character_width = 200
@@ -57,12 +58,25 @@ def update_stamina(stamina, sprinting, sprint_cost, max_stamina, regen_rate, cur
         car_speed = 10        
     return stamina, hb, regen_rate, car_speed, character_speed
 
-current_mouth  = mouth["mouth_2"]
-current_hair   = hair["hair_1"]
+current_mouth  = mouth["mouth_3"]
+current_hair   = hair["hair_2"]
 current_beard  = beard["beard_1"]
-current_tshirt = tshirts["tshirt_1"]
-current_arms   = arms["arms_1a"]
-current_legs   = legs["legs_1"]
-current_feet   = feet["feet_1"]
+current_tshirt = tshirts["tshirt_2"]
+current_arms   = arms["arms_2a"]
+current_legs   = legs["legs_2"]
+current_feet   = feet["feet_2a"]
 
-#def draw_player(player_in_car, camera_x, camera_y):
+def draw_character(screen, camera_x, camera_y, character_x, character_y, car_x, car_y, player_in_car, head, body, current_mouth, current_hair, current_beard, current_tshirt, current_arms, current_legs, current_feet):
+    if not player_in_car:
+        position = (character_x - camera_x, character_y - camera_y)
+    else:
+        position = (car_x - camera_x, car_y - camera_y)
+    screen.blit(head,           position)
+    screen.blit(body,           position)
+    screen.blit(current_mouth,  position)
+    screen.blit(current_hair,   position)
+    screen.blit(current_beard,  position)
+    screen.blit(current_tshirt, position)
+    screen.blit(current_arms,   position)
+    screen.blit(current_legs,   position)
+    screen.blit(current_feet,   position)

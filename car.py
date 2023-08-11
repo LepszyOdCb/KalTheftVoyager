@@ -1,4 +1,6 @@
 from character import *
+from settings import *
+from map import *
 
 # Ustawienia pojazdu
 car_width = 250
@@ -12,3 +14,4 @@ distance_to_car = pygame.math.Vector2(car_x - character_x, car_y - character_y).
 # Zmienne dotyczące gracza w pojeździe
 player_in_car = False
 
+    

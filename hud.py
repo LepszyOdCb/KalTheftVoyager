@@ -4,7 +4,7 @@ from settings import *
 from color import *
 from images import *
 from map import *
-
+from character import *
 
 pygame.font.init()
 

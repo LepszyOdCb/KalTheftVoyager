@@ -32,7 +32,7 @@ while running:
     keys = pygame.key.get_pressed()
     sprinting = keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]
     cursor_pos = pygame.mouse.get_pos()
-    player_in_car, character_x, character_y, car_x, car_y, move_keys_pressed, car_image = movement(keys, player_in_car, character_x, character_y, car_x, car_y, character_speed, car_speed, car_image, car_image_mirrored, car_image2)
+    player_in_car, character_x, character_y, car_x, car_y, move_keys_pressed, car_image = movement(keys, player_in_car, character_x, character_y, car_x, car_y, character_speed, car_speed, car_image, car_image_mirrored, car_image_2)
     
     # Obliczenie pozycji kamery
     camera_x, camera_y = camera_position(player_in_car, character_x, character_y, car_x, car_y, screen_width, screen_height, map_width, map_height)
@@ -52,30 +52,8 @@ while running:
 
     # Narysowanie pojazdu i postaci
     screen.blit(car_image, (car_x - camera_x, car_y - camera_y))
-    
-   
+    draw_character(screen, camera_x, camera_y, character_x, character_y, car_x, car_y, player_in_car, head, body, current_mouth, current_hair, current_beard, current_tshirt, current_arms, current_legs, current_feet)
 
-
-    if not player_in_car:
-        screen.blit(head,           (character_x - camera_x, character_y - camera_y))
-        screen.blit(body,           (character_x - camera_x, character_y - camera_y))
-        screen.blit(current_mouth,  (character_x - camera_x, character_y - camera_y))
-        screen.blit(current_hair,   (character_x - camera_x, character_y - camera_y))
-        screen.blit(current_beard,  (character_x - camera_x, character_y - camera_y))
-        screen.blit(current_tshirt, (character_x - camera_x, character_y - camera_y))
-        screen.blit(current_arms,   (character_x - camera_x, character_y - camera_y))
-        screen.blit(current_legs,   (character_x - camera_x, character_y - camera_y))
-        screen.blit(current_feet,   (character_x - camera_x, character_y - camera_y))
-    else:
-        screen.blit(head,           (car_x - camera_x, car_y - camera_y))
-        screen.blit(body,           (car_x - camera_x, car_y - camera_y))
-        screen.blit(current_mouth,  (car_x - camera_x, car_y - camera_y))
-        screen.blit(current_hair,   (car_x - camera_x, car_y - camera_y))
-        screen.blit(current_beard,  (car_x - camera_x, car_y - camera_y))
-        screen.blit(current_tshirt, (car_x - camera_x, car_y - camera_y))
-        screen.blit(current_arms,   (car_x - camera_x, car_y - camera_y))
-        screen.blit(current_legs,   (car_x - camera_x, car_y - camera_y))
-        screen.blit(current_feet,   (car_x - camera_x, car_y - camera_y))
 
     # Narysowanie paska staminy
     stamina_bar_rect = pygame.Rect(stamina_bar_x, stamina_bar_y, stamina / max_stamina * stamina_bar_width, stamina_bar_height)
