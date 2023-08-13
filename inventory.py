@@ -21,8 +21,9 @@ slot_vertically = 5
 slot_horizontally = slot_vertically
 slot_amount = 30
 
-selected_slot = 0
 slot_change_amount = 1
+selected_slot = 0
+selected_slot_2 = 10
 
 def read_slots_from_file():
     slots = []
@@ -118,38 +119,119 @@ def draw_inventory(screen, inventory_x, inventory_y, slots, items_images, invent
     return item_image, inventory_open
 
 def is_cursor_on_slot(inventory_x, inventory_y, inventory_gap, inventory_height, cursor_pos, keys, slots, eating_sound, screen, hp, hb, hp_max, hb_max, inventory_open, selected_slot):
-    if inventory_open == True:
-        for i in range(1, slot_vertically + 1): 
-            is_q_pressed = pygame.key.get_pressed()[pygame.K_q]
-            slot_x = inventory_gap
-            slot_y = inventory_y + (inventory_gap + inventory_height) * i
-            
-            if (slot_x <= cursor_pos[0] <= (slot_x + inventory_widht)) and (slot_y <= cursor_pos[1] <= (slot_y + image_size)) and (is_q_pressed):
-                slots[i-1], slots[5] = slots[5], slots[i-1]
-                save_slots_to_file(slots)
-                return print(i, slots[i])
-    
-    elif inventory_open == False:
+    if inventory_open == False:
             left_mouse_button_pressed = pygame.mouse.get_pressed()[0]
             if left_mouse_button_pressed and slots[selected_slot - 1] == "bread":
                use_bread(eating_sound, hb)
                draw_hp_hb(screen, hp, hb, hp_max, hb_max)
                slots[selected_slot - 1] = "None"
                return print(slots[selected_slot])
-    
-def draw_selected_slot(screen, image_size, selected_slot):
+
+def swap_slot(selected_slot, selected_slot_2, inventory_open):
+    left_mouse_button_pressed = pygame.mouse.get_pressed()[0]
+    if inventory_open == True:
+        if left_mouse_button_pressed:
+            selected_slot_2 = selected_slot
+            return selected_slot, selected_slot_2, print(selected_slot_2)
+           
+def draw_selected_slot(screen, image_size, selected_slot, inventory_open):
     for slot in range(1, 6):
         if slot == selected_slot:
             slot_x = inventory_gap 
             slot_y = inventory_y + (inventory_gap + inventory_height) * slot
-            pygame.draw.rect(screen, (255, 165, 0), (slot_x, slot_y, image_size, image_size), 4)
+            pygame.draw.rect(screen, orange, (slot_x, slot_y, image_size, image_size), 4)
+    if inventory_open == True:
+        for slot in range(6, 11):
+            if slot == selected_slot:
+                slot_x = inventory_x + (inventory_gap + inventory_height)*1
+                slot_y = inventory_y + (inventory_gap + inventory_height)*(slot - 5)
+                pygame.draw.rect(screen, orange, (slot_x, slot_y, image_size, image_size), 4)
+    if inventory_open == True:
+        for slot in range(11, 16):
+            if slot == selected_slot:
+                slot_x = inventory_x + (inventory_gap + inventory_height)*2
+                slot_y = inventory_y + (inventory_gap + inventory_height)*(slot - 10)
+                pygame.draw.rect(screen, orange, (slot_x, slot_y, image_size, image_size), 4)
+    if inventory_open == True:
+      for slot in range(16, 21):
+          if slot == selected_slot:
+                slot_x = inventory_x + (inventory_gap + inventory_height)*3
+                slot_y = inventory_y + (inventory_gap + inventory_height) * (slot - 15)
+                pygame.draw.rect(screen, orange, (slot_x, slot_y, image_size, image_size), 4)
+    if inventory_open == True:
+        for slot in range(21, 26):
+            if slot == selected_slot:
+                slot_x = inventory_x + (inventory_gap + inventory_height)*4
+                slot_y = inventory_y + (inventory_gap + inventory_height) * (slot - 20)
+                pygame.draw.rect(screen, orange, (slot_x, slot_y, image_size, image_size), 4)
+    if inventory_open == True:
+        for slot in range(26, 31):
+            if slot == selected_slot:
+                slot_x = inventory_x + (inventory_gap + inventory_height)*5
+                slot_y = inventory_y + (inventory_gap + inventory_height) * (slot - 25)
+                pygame.draw.rect(screen, orange, (slot_x, slot_y, image_size, image_size), 4)
 
-def process_selected_slot(selected_slot):
-    if selected_slot <= -1:
-        selected_slot = 5
-        return selected_slot
-    elif selected_slot >= 6:
-        selected_slot = 0
-        return selected_slot
-    else:
-        return selected_slot
+def draw_selected_slot_2(screen, image_size, selected_slot, inventory_open):
+    if inventory_open == True:
+        for slot in range(6, 11):
+            if slot == selected_slot_2:
+                slot_x = inventory_x + (inventory_gap + inventory_height)*1
+                slot_y = inventory_y + (inventory_gap + inventory_height)*(slot - 5)
+                pygame.draw.rect(screen, blue, (slot_x, slot_y, image_size, image_size), 4)
+    if inventory_open == True:
+        for slot in range(11, 16):
+            if slot == selected_slot_2:
+                slot_x = inventory_x + (inventory_gap + inventory_height)*2
+                slot_y = inventory_y + (inventory_gap + inventory_height)*(slot - 10)
+                pygame.draw.rect(screen, blue, (slot_x, slot_y, image_size, image_size), 4)
+    if inventory_open == True:
+      for slot in range(16, 21):
+          if slot == selected_slot_2:
+                slot_x = inventory_x + (inventory_gap + inventory_height)*3
+                slot_y = inventory_y + (inventory_gap + inventory_height) * (slot - 15)
+                pygame.draw.rect(screen, blue, (slot_x, slot_y, image_size, image_size), 4)
+    if inventory_open == True:
+        for slot in range(21, 26):
+            if slot == selected_slot_2:
+                slot_x = inventory_x + (inventory_gap + inventory_height)*4
+                slot_y = inventory_y + (inventory_gap + inventory_height) * (slot - 20)
+                pygame.draw.rect(screen, blue, (slot_x, slot_y, image_size, image_size), 4)
+    if inventory_open == True:
+        for slot in range(26, 31):
+            if slot == selected_slot_2:
+                slot_x = inventory_x + (inventory_gap + inventory_height)*5
+                slot_y = inventory_y + (inventory_gap + inventory_height) * (slot - 25)
+                pygame.draw.rect(screen, blue, (slot_x, slot_y, image_size, image_size), 4)
+
+
+        
+def process_selected_slot(selected_slot, inventory_open):
+    if inventory_open == False:
+        if selected_slot <= -1:
+            selected_slot = 5
+            return selected_slot
+        elif selected_slot >= 6:
+            selected_slot = 0
+            return selected_slot
+        else:
+            return selected_slot
+    if inventory_open == True:
+        if selected_slot <= -1:
+            selected_slot = 5
+            return selected_slot
+        elif selected_slot >= 31:
+            selected_slot = 0
+            return selected_slot
+        else:
+            return selected_slot
+        
+    if inventory_open == True:
+        if selected_slot_2 <= 5:
+            selected_slot_2 = 30
+            return selected_slot_2
+        elif selected_slot_2 >= 32:
+            selected_slot_2 = 5
+            return selected_slot_2
+        else:
+            return selected_slot_2
+        

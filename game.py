@@ -80,11 +80,14 @@ while running:
     draw_hp_hb(screen, hp, hb, hp_max, hb_max)
 
     # Ekwipunek
+    selected_slot_2 = swap_slot(selected_slot, selected_slot_2, inventory_open)
     draw_inventory(screen, inventory_x, inventory_y, slots, items_images, inventory_open, keys)
     is_cursor_on_slot(inventory_x, inventory_y, inventory_gap, inventory_height, cursor_pos, keys, slots, eating_sound, screen, hp, hb, hp_max, hb_max, inventory_open, selected_slot)
-    draw_selected_slot(screen, image_size, selected_slot)
-    selected_slot = process_selected_slot(selected_slot)
+    draw_selected_slot(screen, image_size, selected_slot, inventory_open)
+    draw_selected_slot_2(screen, image_size, selected_slot, inventory_open)
+    selected_slot = process_selected_slot(selected_slot, inventory_open)
     
+
     # Inicjalizacja
     pygame.display.flip()
     pygame.time.Clock().tick(30)
