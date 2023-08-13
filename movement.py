@@ -49,12 +49,5 @@ def movement(keys, player_in_car, character_x, character_y, car_x, car_y, charac
             player_in_car = False
             character_x, character_y = car_x, car_y
     
-    #if move_keys_pressed == True:
-    #    ticks_since_last_animations += 1
-    #    
-    #    if ticks_since_last_animations >= animations_frequency:
-    #        ticks_since_last_animations = 0
-    #        if 
-    #elif move_keys_pressed == False:
-    #    current_feet = 
     return player_in_car, character_x, character_y, car_x, car_y, move_keys_pressed, car_image
+

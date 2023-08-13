@@ -7,6 +7,6 @@ def use_bread(eating_sound, hb):
     sound = pygame.mixer.Sound(eating_sound)
     sound.play()
     hb += 1
-    return print(hb)
+    return print(hb) 
 
  

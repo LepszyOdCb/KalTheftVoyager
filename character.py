@@ -80,3 +80,17 @@ def draw_character(screen, camera_x, camera_y, character_x, character_y, car_x, 
     screen.blit(current_arms,   position)
     screen.blit(current_legs,   position)
     screen.blit(current_feet,   position)
+
+def handle_movement_animation(move_keys_pressed, tick_counter, current_feet, feet):
+    if move_keys_pressed:
+        tick_counter += 5
+        if tick_counter >= 30:
+            if current_feet == feet["feet_2b"]:
+                current_feet = feet["feet_2c"]
+            else:
+                current_feet = feet["feet_2b"]
+            tick_counter = 0
+    else:
+        current_feet = feet["feet_2a"]
+
+    return tick_counter, current_feet

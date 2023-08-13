@@ -13,13 +13,16 @@ inventory_widht = 64
 inventory_gap = 8
 inventory_x = screen_width / 2 - (inventory_widht + inventory_gap) * 2.5
 inventory_y = screen_width / 4
-inventory_open = True
+inventory_open = False
 
 image_size = 64
 
 slot_vertically = 5
 slot_horizontally = slot_vertically
 slot_amount = 30
+
+selected_slot = 0
+slot_change_amount = 1
 
 def read_slots_from_file():
     slots = []
@@ -114,8 +117,7 @@ def draw_inventory(screen, inventory_x, inventory_y, slots, items_images, invent
                         screen.blit(item_image, (slot_x, slot_y))
     return item_image, inventory_open
 
-def is_cursor_on_slot(inventory_x, inventory_y, inventory_gap, inventory_height, cursor_pos, keys, slots):
-    global inventory_open
+def is_cursor_on_slot(inventory_x, inventory_y, inventory_gap, inventory_height, cursor_pos, keys, slots, eating_sound, screen, hp, hb, hp_max, hb_max, inventory_open, selected_slot):
     if inventory_open == True:
         for i in range(1, slot_vertically + 1): 
             is_q_pressed = pygame.key.get_pressed()[pygame.K_q]
@@ -126,17 +128,28 @@ def is_cursor_on_slot(inventory_x, inventory_y, inventory_gap, inventory_height,
                 slots[i-1], slots[5] = slots[5], slots[i-1]
                 save_slots_to_file(slots)
                 return print(i, slots[i])
-        
-def quick_slot_usage(keys, eating_sound, screen, hp, hb, hp_max, hb_max):
-    if inventory_open == False:
-        for i in range(1, slot_vertically + 1):
-            if keys[getattr(pygame, f"K_{i}")]:
-                if slots[i - 1] == "bread":
-                    use_bread(eating_sound, hb)
-                    draw_hp_hb(screen, hp, hb, hp_max, hb_max)
-                    slots[i - 1] = "None"
-                    return print(slots[i - 1])
-                else:
-                    return print(slots[i-1])
-                
+    
+    elif inventory_open == False:
+            left_mouse_button_pressed = pygame.mouse.get_pressed()[0]
+            if left_mouse_button_pressed and slots[selected_slot - 1] == "bread":
+               use_bread(eating_sound, hb)
+               draw_hp_hb(screen, hp, hb, hp_max, hb_max)
+               slots[selected_slot - 1] = "None"
+               return print(slots[selected_slot])
+    
+def draw_selected_slot(screen, image_size, selected_slot):
+    for slot in range(1, 6):
+        if slot == selected_slot:
+            slot_x = inventory_gap 
+            slot_y = inventory_y + (inventory_gap + inventory_height) * slot
+            pygame.draw.rect(screen, (255, 165, 0), (slot_x, slot_y, image_size, image_size), 4)
 
+def process_selected_slot(selected_slot):
+    if selected_slot <= -1:
+        selected_slot = 5
+        return selected_slot
+    elif selected_slot >= 6:
+        selected_slot = 0
+        return selected_slot
+    else:
+        return selected_slot

@@ -16,6 +16,8 @@ from inventory import *
 pygame.init()
 pygame.display.set_icon(logo_image)
 
+tick_counter = 0
+
 # Główna pętla gry
 running = True
 last_refresh_time = pygame.time.get_ticks() 
@@ -28,6 +30,14 @@ while running:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_e:
             inventory_open = not inventory_open
             print(inventory_open)
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 4:  
+                selected_slot -= slot_change_amount
+                print(selected_slot)
+            elif event.button == 5: 
+                selected_slot += slot_change_amount
+                print(selected_slot)
+
     # Poruszanie postacią lub pojazdem
     keys = pygame.key.get_pressed()
     sprinting = keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]
@@ -53,7 +63,7 @@ while running:
     # Narysowanie pojazdu i postaci
     screen.blit(car_image, (car_x - camera_x, car_y - camera_y))
     draw_character(screen, camera_x, camera_y, character_x, character_y, car_x, car_y, player_in_car, head, body, current_mouth, current_hair, current_beard, current_tshirt, current_arms, current_legs, current_feet)
-
+    tick_counter, current_feet = handle_movement_animation(move_keys_pressed, tick_counter, current_feet, feet)
 
     # Narysowanie paska staminy
     stamina_bar_rect = pygame.Rect(stamina_bar_x, stamina_bar_y, stamina / max_stamina * stamina_bar_width, stamina_bar_height)
@@ -71,9 +81,9 @@ while running:
 
     # Ekwipunek
     draw_inventory(screen, inventory_x, inventory_y, slots, items_images, inventory_open, keys)
-    is_cursor_on_slot(inventory_x, inventory_y, inventory_gap, inventory_height, cursor_pos, keys, slots)
-    quick_slot_usage(keys, eating_sound, screen, hp, hb, hp_max, hb_max)
-    
+    is_cursor_on_slot(inventory_x, inventory_y, inventory_gap, inventory_height, cursor_pos, keys, slots, eating_sound, screen, hp, hb, hp_max, hb_max, inventory_open, selected_slot)
+    draw_selected_slot(screen, image_size, selected_slot)
+    selected_slot = process_selected_slot(selected_slot)
     
     # Inicjalizacja
     pygame.display.flip()
