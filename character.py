@@ -31,7 +31,7 @@ def update_stamina(stamina, sprinting, sprint_cost, max_stamina, regen_rate, cur
             stamina -= sprint_cost
             if stamina < 0:
                 stamina = 0
-                hb += 1
+                hb -= 1
                 print(hb)
     else:
         if current_time - last_regen_time > regen_time and stamina < max_stamina:

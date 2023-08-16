@@ -247,7 +247,7 @@ def inventory_from_quick_slot(keys, slots, inventory_open, selected_slot, screen
                         slots[selected_slot - 1] = "None"
                         break
                     slot_index += 1
-            
+                
 
 
     

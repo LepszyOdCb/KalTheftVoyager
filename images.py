@@ -28,7 +28,7 @@ items_images = {
 
 # Sounds
 eating_sound = f"{your_file_directory}sound/eating_sound.mp3"
-
+moving_sound = f"{your_file_directory}sound/moving_sound.mp3"
 # Player
 
 # Face
