@@ -38,6 +38,7 @@ while running:
                 selected_slot += slot_change_amount
                 print(selected_slot)
 
+
     # Poruszanie postacią lub pojazdem
     keys = pygame.key.get_pressed()
     sprinting = keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]
@@ -80,13 +81,15 @@ while running:
     draw_hp_hb(screen, hp, hb, hp_max, hb_max)
 
     # Ekwipunek
-    selected_slot_2 = swap_slot(selected_slot, selected_slot_2, inventory_open)
-    draw_inventory(screen, inventory_x, inventory_y, slots, items_images, inventory_open, keys)
-    is_cursor_on_slot(inventory_x, inventory_y, inventory_gap, inventory_height, cursor_pos, keys, slots, eating_sound, screen, hp, hb, hp_max, hb_max, inventory_open, selected_slot)
-    draw_selected_slot(screen, image_size, selected_slot, inventory_open)
-    draw_selected_slot_2(screen, image_size, selected_slot, inventory_open)
-    selected_slot = process_selected_slot(selected_slot, inventory_open)
-    
+    inventory_draw(screen, inventory_x, inventory_y, slots, items_images, inventory_open, keys)
+    inventory_item_use(inventory_x, inventory_y, inventory_gap, inventory_height, cursor_pos, keys, slots, eating_sound, screen, hp, hb, hp_max, hb_max, inventory_open, selected_slot)
+    inventory_draw_selected_slot(screen, image_size, selected_slot, inventory_open)
+    inventory_to_quick_slot(keys, slots, inventory_open, selected_slot, screen)
+    inventory_from_quick_slot(keys, slots, inventory_open, selected_slot, screen)
+    #draw_selected_slot_2(screen, image_size, selected_slot, inventory_open)
+    #swap_slot(selected_slot, selected_slot_2, inventory_open)
+    selected_slot = inventory_slot_limit(selected_slot, inventory_open)
+    selected_slot_2 = inventory_slot_limit(selected_slot, inventory_open)
 
     # Inicjalizacja
     pygame.display.flip()
